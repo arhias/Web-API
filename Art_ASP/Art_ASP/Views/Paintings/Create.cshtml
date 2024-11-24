@@ -1,0 +1,32 @@
+﻿@model Art_ASP.Data.Painting
+
+<h1>Add New Painting</h1>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label for="Name">Name</label>
+        <input type="text" id="Name" name="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Author">Author</label>
+        <input type="text" id="Author" name="Author" class="form-control" />
+        <span asp-validation-for="Author" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="ImageUrl">Image URL</label>
+        <input type="url" id="ImageUrl" name="ImageUrl" class="form-control" />
+        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Description">Description</label>
+        <textarea id="Description" name="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Price">Price (₴)</label>
+        <input type="number" id="Price" name="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Painting</button>
+</form>

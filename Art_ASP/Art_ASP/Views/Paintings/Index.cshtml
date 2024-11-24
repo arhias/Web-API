@@ -1,0 +1,86 @@
+﻿@model IEnumerable<Art_ASP.Data.Painting>
+@{
+    ViewBag.Title = "Gallery";
+    var deletedPaintings = ViewBag.DeletedPaintings as List<Art_ASP.Data.Painting>;
+}
+
+<h1>Gallery</h1>
+<a class="btn btn-primary mb-3" asp-action="Create">Add New Painting</a>
+
+<div class="row">
+    @foreach (var painting in Model)
+    {
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <img src="@painting.ImageUrl" class="card-img-top" alt="@painting.Name" style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">@painting.Name</h5>
+                    <p class="card-text"><strong>Author:</strong> @painting.Author</p>
+                    <p class="card-text">@painting.Description</p>
+                    <p class="card-text"><strong>Price:</strong> @painting.Price.ToString("C", new System.Globalization.CultureInfo("uk-UA"))</p>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@painting.Id">Delete</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div id="trash-bin" class="trash-bin">
+    <button id="toggle-trash-bin" class="btn btn-dark">Trash Bin</button>
+    <div id="trash-bin-content" class="trash-bin-content">
+        <h5>Trash Bin</h5>
+        @if (deletedPaintings?.Any() == true)
+        {
+            <ul class="list-group">
+                @foreach (var painting in deletedPaintings)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>@painting.Name</span>
+                        <div>
+                            <a class="btn btn-warning btn-sm me-1" asp-action="Restore" asp-route-id="@painting.Id">Restore</a>
+                            <a class="btn btn-danger btn-sm" asp-action="PermanentlyDelete" asp-route-id="@painting.Id">Delete</a>
+                        </div>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No deleted paintings.</p>
+        }
+    </div>
+</div>
+
+<style>
+    .trash-bin {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
+
+    #trash-bin-content {
+        display: none;
+        background: #f8f9fa;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 15px;
+        max-width: 300px;
+        max-height: 400px;
+        overflow-y: auto;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const toggleButton = document.getElementById('toggle-trash-bin');
+        const trashBinContent = document.getElementById('trash-bin-content');
+
+        toggleButton.addEventListener('click', () => {
+            const isHidden = trashBinContent.style.display === 'none';
+            trashBinContent.style.display = isHidden ? 'block' : 'none';
+        });
+    });
+</script>
+
